@@ -1,6 +1,13 @@
 package models
 
+import (
+	"gorm.io/gorm"
+)
+
 type Sensor struct {
-	ID uint
-	Name
+	gorm.Model
+	Name   string
+	IP     string
+	Port   string
+	Values []SensorValue
 }

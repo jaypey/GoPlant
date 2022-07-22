@@ -1,22 +1,32 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 
-#define WIFI_SSID "******"
-#define WIFI_PASS "*******"
+#define WIFI_SSID "****"
+#define WIFI_PASS "****"
 #define UDP_PORT 8080
+#define SENSOR_ID "1"
 
 WiFiUDP UDP;
 char packet[255];
-char reply[] = "Packet received!";
-const char *remoteip = "**********";
+char reply[] = "";
+const char *remoteip = "*****";
 IPAddress remote;
 
+int sensorValue;
+int sensorPin = A0;
+int powerPin = 5;
+int limit = 300;
+int latestValue = -1;
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   Serial.println();
 
+  //Humidity sensor
+  pinMode(powerPin, OUTPUT);
+  digitalWrite(powerPin, LOW);
+  
   //Begin WiFi
   WiFi.begin(WIFI_SSID, WIFI_PASS);
 
@@ -47,14 +57,31 @@ void setup() {
 
 void loop() {
 
+    latestValue = logSoilMoistureSensor();
     // Send return packet
+     char latestValueString[5];
+     sprintf(latestValueString, "%d", latestValue);
+     strcat(reply, SENSOR_ID);
+     strcat(reply,"SoilMoist:");
+     strcat(reply, latestValueString);
+    
     if(UDP.beginPacket(remote, UDP_PORT)){
       Serial.println("Adequate IP and Port");
       }
     UDP.write(reply);
+    Serial.println(reply);
     if(UDP.endPacket()){
       Serial.println("Packet sent successfully");
     }
     
-    delay(1000);
+    reply[0] = 0;
+    delay(60000);
+}
+
+int logSoilMoistureSensor(){
+    digitalWrite(powerPin, HIGH);
+    delay(100);
+    digitalWrite(powerPin, LOW);
+    sensorValue = analogRead(sensorPin);
+    return sensorValue;
 }

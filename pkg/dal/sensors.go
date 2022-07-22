@@ -7,8 +7,8 @@ import (
 	"github.com/jaypey/GoPlant/pkg/models"
 )
 
-func AddSensor(sensor models.Sensor) (uint, error) {
-	result := config.GetDB().Create(&sensor)
+func AddSensor(sensor *models.Sensor) (uint, error) {
+	result := config.GetDB().Create(sensor)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return 0, result.Error
@@ -28,6 +28,15 @@ func GetAllSensors() ([]models.Sensor, error) {
 func GetSensor(id uint) (models.Sensor, error) {
 	var sensor models.Sensor
 	result := config.GetDB().Preload("Values").First(&sensor, id)
+	if result.Error != nil {
+		return sensor, result.Error
+	}
+	return sensor, nil
+}
+
+func GetSensorByNameAndIP(name string, ip string) (models.Sensor, error) {
+	var sensor models.Sensor
+	result := config.GetDB().Preload("Values").Where("Name = ? AND IP = ?", name, ip).First(&sensor)
 	if result.Error != nil {
 		return sensor, result.Error
 	}

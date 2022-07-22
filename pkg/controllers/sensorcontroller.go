@@ -21,7 +21,7 @@ func AddSensor(c *gin.Context) {
 	if err := c.BindJSON(&newSensor); err != nil {
 		return
 	}
-	id, err := dal.AddSensor(newSensor)
+	id, err := dal.AddSensor(&newSensor)
 	if err != nil {
 		c.AbortWithStatus(500)
 	}

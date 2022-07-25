@@ -28,13 +28,13 @@ func handlePacket(buf []byte, addr *net.UDPAddr, rlen int, count int) {
 		sensor, err := dal.GetSensorByNameAndIP(sensorPart[0], addr.IP.String())
 		if err == gorm.ErrRecordNotFound {
 			sensor = models.Sensor{Name: sensorPart[0], IP: addr.IP.String()}
-			if _, err := dal.AddSensor(&sensor); err == nil {
+			if _, err := dal.AddSensor(&sensor); err != nil {
 				fmt.Println("Error adding sensor")
 			}
 		}
 		if f, err := strconv.ParseFloat(sensorPart[1], 32); err == nil {
 			sensorValue := models.SensorValue{Value: f, SensorID: sensor.ID}
-			if _, err := dal.AddSensorValue(&sensorValue); err == nil {
+			if _, err := dal.AddSensorValue(&sensorValue); err != nil {
 				fmt.Println("Error adding sensor value")
 			}
 		} else {

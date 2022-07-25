@@ -11,3 +11,7 @@ The website offers an interface to retrieve the data received and stored in a Po
 
 A controller can be linked to many sensors. The .ino provided in this repository shows the format in which the data must be sent : {SensorName}:{value}. 
 
+## Dependencies
+GoPlant requires the following packages:
+- Gin
+- Gorm

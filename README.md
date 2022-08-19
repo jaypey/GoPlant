@@ -1,7 +1,7 @@
 <img src="https://github.com/jaypey/GoPlant/blob/master/static/goplantlogo.png?raw=true" alt="drawing" width="200"/>
 
 GoPlant is a website/software that receives UDP packets sent by ESP8266s while profiting from Go concurrency features and shows the data in real time through the Gin web framework.
-Similar to Home Assistant, GoPlant plans to offer a front end to monitor the data. It is an open source IoT solution for your projects.
+Similar to Home Assistant, GoPlant plans to offer a front end to monitor the data with a SPA built with React js. It is an open source IoT solution for your projects.
 
 ## API
 

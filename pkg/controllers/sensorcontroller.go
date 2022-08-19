@@ -9,6 +9,7 @@ import (
 )
 
 func GetSensors(c *gin.Context) {
+	c.Header("Access-Control-Allow-Origin", "*")
 	sensors, err := dal.GetAllSensors()
 	if err != nil {
 		c.AbortWithStatus(500)

@@ -7,3 +7,14 @@
 .Body-content{
   margin: 5px;
 }
+
+.cardPicker{
+  margin-top: 2em !important;
+}
+
+.sensorCard{
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity))!important;
+  cursor: pointer;
+  color:white;
+}

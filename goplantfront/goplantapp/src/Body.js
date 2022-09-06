@@ -5,6 +5,7 @@ import {Container, Row, Col, Card} from 'react-bootstrap'
 import { useEffect, useState } from 'react';
 import SensorPickerCardList from './sensorPickerCardList';
 import WithListLoading from './withListLoading';
+import {HandleFetchErrors} from './ApiFetchHandler';
 
 function Body() {
     const ListLoading = WithListLoading(SensorPickerCardList);
@@ -17,7 +18,9 @@ function Body() {
         setAppState({loading:true});
         const response = await fetch(
             "http://localhost:8080/sensors"
-        ).then((response) => response.json());
+        ).then((res) => HandleFetchErrors(res))
+            .then((res) => res.json())
+            .catch((err) => err);
         console.log(response);
         setAppState({loading:false, sensors: response});
     };

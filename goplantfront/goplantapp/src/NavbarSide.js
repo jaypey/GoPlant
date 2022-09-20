@@ -4,7 +4,7 @@ import './Navbar.css';
 function NavbarSide(props) {
     return (
         <>
-            <Nav className="w-100 h-100 d-none d-md-block bg-green sidebar"
+            <Nav className="w-100 h-100 d-none d-md-block bg-dark sidebar"
             activeKey="/home"
             >
                 <Nav.Item className="navLeftItem">

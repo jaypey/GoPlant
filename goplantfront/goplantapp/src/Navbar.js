@@ -5,16 +5,17 @@ import {Nav, InputGroup, Button, Form} from 'react-bootstrap';
 function NavbarTop(props) {
     return(
         <>
-            <Navbar bg="dark" className="topBar">
+            <Navbar className="topBar bg-success">
                 <Container>
                     <Navbar.Toggle aria-controls='basic-navbar-nav' />
                     <InputGroup className="w-25">
                         <Form.Control
+                        className="bg-darkgrey text-light border-0"
                         placeholder="Search"
                         aria-label="Search"
                         aria-describedby="Search"
                         />
-                        <Button variant="outline-secondary" id="button-addon2">
+                        <Button variant="secondary" id="button-addon2">
                         Search
                         </Button>
                     </InputGroup>

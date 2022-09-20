@@ -21,7 +21,6 @@ function Body() {
         ).then((res) => HandleFetchErrors(res))
             .then((res) => res.json())
             .catch((err) => err);
-        console.log(response);
         setAppState({loading:false, sensors: response});
     };
 

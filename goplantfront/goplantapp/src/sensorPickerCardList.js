@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 
 function SensorPickerCardList(props) {
     const {sensors} = props;
-
-    if(!sensors || sensors.length === 0) return <p>No sensors</p>;
+    
+    if(sensors == null || sensors instanceof Error || sensors.length === 0) return <p>No sensors</p>;
 
     return (
         <Row className="cardPicker">

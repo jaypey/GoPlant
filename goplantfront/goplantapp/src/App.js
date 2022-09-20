@@ -12,7 +12,7 @@ function App() {
       <Container fluid className='h-100'>
         <Row className="h-100">
           <Col id="sidebar-wrapper">
-            <NavbarSide />
+            <NavbarSide className="bg-dark" />
           </Col>
           <Col id="page-content-wrapper">
             <Body/>

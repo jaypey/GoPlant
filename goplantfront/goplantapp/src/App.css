@@ -1,4 +1,7 @@
 
+:root{
+  --bs-darkgrey-rgb: 77, 82, 86;
+}
 
 .App{
   height: 100%;
@@ -18,4 +21,8 @@
   background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity))!important;
   cursor: pointer;
   color:white;
+}
+
+.bg-darkgrey{
+  background-color: rgb(var(--bs-darkgrey-rgb)) !important;
 }

@@ -1,15 +1,15 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 
-#define WIFI_SSID "****"
-#define WIFI_PASS "****"
+#define WIFI_SSID "*"
+#define WIFI_PASS "*"
 #define UDP_PORT 8080
 #define SENSOR_ID "1"
 
 WiFiUDP UDP;
 char packet[255];
 char reply[] = "";
-const char *remoteip = "*****";
+const char *remoteip = "*";
 IPAddress remote;
 
 int sensorValue;
@@ -81,7 +81,8 @@ void loop() {
 int logSoilMoistureSensor(){
     digitalWrite(powerPin, HIGH);
     delay(100);
-    digitalWrite(powerPin, LOW);
     sensorValue = analogRead(sensorPin);
+    digitalWrite(powerPin, LOW);
+    sensorValue = map(sensorValue,420,50,0,100);
     return sensorValue;
 }

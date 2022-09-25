@@ -12,7 +12,7 @@ function SensorPickerCardList(props) {
             {sensors.map((sensor) => {
                 return(
                     <Col md={3}>
-                        <Card key={sensor.ID} className="sensorCard" style={{ width: '18rem' }}>
+                        <Card key={sensor.ID} className="sensorCard mb-4" >
                             <Card.Body>
                                 <Card.Title>{sensor.Name}</Card.Title>
                                 <Card.Subtitle className="mb-2 text-muted">{sensor.IP}</Card.Subtitle>

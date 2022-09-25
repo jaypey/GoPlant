@@ -13,7 +13,7 @@ var (
 )
 
 func Connect() {
-	dsn := "host=172.18.0.2 user=postgres password=postgres dbname=goplantdb port=5432 sslmode=disable"
+	dsn := "host=localhost user=postgres password=postgres dbname=goplantdb port=5432 sslmode=disable"
 	d, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		fmt.Println("- [Database error]")

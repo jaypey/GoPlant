@@ -5,10 +5,11 @@ import (
 	"net"
 	"strconv"
 	"strings"
+	"sync"
 
+	"github.com/jaypey/GoPlant/pkg/config"
 	"github.com/jaypey/GoPlant/pkg/dal"
 	"github.com/jaypey/GoPlant/pkg/models"
-	"gorm.io/gorm"
 )
 
 const (
@@ -17,6 +18,8 @@ const (
 	connType = "udp"
 )
 
+var SensorCache sync.Map
+
 func handlePacket(buf []byte, addr *net.UDPAddr, rlen int, count int) {
 	reception := string(buf[0:rlen])
 	receptionParts := strings.Split(reception, ";")
@@ -24,16 +27,17 @@ func handlePacket(buf []byte, addr *net.UDPAddr, rlen int, count int) {
 	for i := 0; i < len(receptionParts); i++ {
 		sensorPart := strings.Split(receptionParts[i], ":")
 
-		//TODO: Add in-memory list of to prevent querying too much
-		sensor, err := dal.GetSensorByNameAndIP(sensorPart[0], addr.IP.String())
-		if err == gorm.ErrRecordNotFound {
-			sensor = models.Sensor{Name: sensorPart[0], IP: addr.IP.String()}
+		sensorid, found := SensorCache.Load(sensorPart[0])
+		if !found {
+			sensor := models.Sensor{Name: sensorPart[0], IP: addr.IP.String()}
 			if _, err := dal.AddSensor(&sensor); err != nil {
 				fmt.Println("Error adding sensor")
 			}
+			sensorid = sensor.ID
+			SensorCache.Store(sensor.Name, sensor.ID)
 		}
 		if f, err := strconv.ParseFloat(sensorPart[1], 32); err == nil {
-			sensorValue := models.SensorValue{Value: f, SensorID: sensor.ID}
+			sensorValue := models.SensorValue{Value: f, SensorID: sensorid.(uint)}
 			if _, err := dal.AddSensorValue(&sensorValue); err != nil {
 				fmt.Println("Error adding sensor value")
 			}
@@ -50,6 +54,17 @@ func ListenPacket() {
 	addr, _ := net.ResolveUDPAddr(connType, connPort)
 	fmt.Println(addr.Port)
 	sock, _ := net.ListenUDP(connType, addr)
+
+	//Retrieve existing sensors
+	var sensors []models.Sensor
+	result := config.GetDB().Select("id", "name").Find(&sensors)
+	if result.Error != nil {
+		println("[-] Error retrieving sensors")
+	} else {
+		for _, sensor := range sensors {
+			SensorCache.Store(sensor.Name, sensor.ID)
+		}
+	}
 
 	i := 0
 	for {
